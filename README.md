@@ -9,7 +9,7 @@ First you need to import the configurable form reducer into your app. I'll use a
 
 *reducer.js*
 ```javascript
-import { configurableFormReducer } from 'react-form'
+import { configurableFormReducer } from 'configurable-form'
 
 export default configurableFormReducer
 ```
@@ -40,7 +40,7 @@ Next you create a view using the Form component and a configuration. This code r
 ```javascript
 import React from 'react'
 import { Map } from 'immutable'
-import { Form } from 'react-form'
+import { Form } from 'configurable-form'
 import { connect } from 'react-redux'
 
 // This simple JSON configuration can be fetched from the server //
