@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Map } from 'immutable'
+import { Container, Col, Row } from 'react-grid-system'
 import * as coreComponents from '../components'
 import { SET_STATE, SET_PROPERTY } from '../common/constants'
 import { connect } from 'react-redux'
@@ -19,16 +20,26 @@ const Form = ({ rootState, state, config, dispatch, name, lib={} }) => {
 }
 
 const renderComponents = (state, config, components, updateValue) => {
-  return config.map(section => {
-    return (
-      <div>
-        {section.map(inputConfig => {
-          const Component = components[inputConfig.type]
-            return <Component config={inputConfig} state={state} update={updateValue}/>
-        })}
-      </div>
-    )
-  })
+  return (
+    <Container>
+      {
+        config.map(section => {
+          return (
+            <Row>
+              {section.map(inputConfig => {
+                const Component = components[inputConfig.type]
+                return (
+                  <Col md={Math.floor(12/section.length)}>
+                    <Component  config={inputConfig} state={state} update={updateValue}/>
+                  </Col>
+                )
+              })}
+            </Row>
+          )
+        })
+      }
+    </Container>
+  )
 }
 
 const updateValue = (name, dispatch) => (path, value) => {

@@ -22,12 +22,20 @@ var reactReduxExternal = {
   amd: 'react-redux'
 }
 
+var reactDomExternal = {
+  root: 'ReactDOM',
+  commonjs2: 'react-dom',
+  commonjs: 'react-dom',
+  amd: 'react-dom'
+}
+
 const webpackConfig = {
 
   externals: {
     'react': reactExternal,
     'redux': reduxExternal,
-    'react-redux': reactReduxExternal
+    'react-redux': reactReduxExternal,
+    'react-dom': reactDomExternal
   },
   entry: {
     main: './src/index.js'
@@ -35,7 +43,7 @@ const webpackConfig = {
   },
 
   output: {
-    filename: 'dist/main.bundle.js',
+    filename: './dist/configurable-form.js',
     library: 'react-form',
     libraryTarget: 'umd',
     umdNamedDefine: true

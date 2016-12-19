@@ -43,11 +43,15 @@ import { Map } from 'immutable'
 import { Form } from 'configurable-form'
 import { connect } from 'react-redux'
 
-// This simple JSON configuration can be fetched from the server //
+/* This simple JSON configuration can be fetched from the server.
+   The form creates a grid where the inner arrays are rows and each object represents a column and a component.
+*/
 const config = [
   [
     { type: 'String', path: ['name'], label: 'Name'},
     { type: 'Number', path: ['age'], label: 'Age'},
+  ],
+  [
     { type: 'TextArea', path: ['bio'], label: 'Short Bio'},
     { type: 'YesNo', path: ['isMember'], label: 'Membership', question: 'Is this user a member?'}
   ]
