@@ -5,6 +5,15 @@ import * as coreComponents from '../components'
 import { SET_STATE, SET_PROPERTY } from '../common/constants'
 import { connect } from 'react-redux'
 
+/*
+rootstate: the configurable-form reducer
+state: the initial state for this form
+config: the config for this form
+dispatch: redux dispatch function
+name: the name of this form
+lib: optional map of user defined components
+*/
+
 const Form = ({ rootState, state, config, dispatch, name, lib={} }) => {
   if(!rootState || !rootState.get(name)) {
     dispatch({ type: SET_STATE, payload: { name, state }})
@@ -22,23 +31,29 @@ const Form = ({ rootState, state, config, dispatch, name, lib={} }) => {
 const renderComponents = (state, config, components, updateValue) => {
   return (
     <Container>
-      {
-        config.map(section => {
-          return (
-            <Row>
-              {section.map(inputConfig => {
-                const Component = components[inputConfig.type]
-                return (
-                  <Col md={Math.floor(12/section.length)}>
-                    <Component  config={inputConfig} state={state} update={updateValue}/>
-                  </Col>
-                )
-              })}
-            </Row>
-          )
-        })
-      }
+      {renderRows(state, config, components, updateValue)}
     </Container>
+  )
+}
+
+const renderRows = (state, config, components, updateValue) => {
+  return (
+    config.map(section => {
+      return (
+        <Row>
+          {section.map(renderCols(state, components, updateValue, section.length))}
+        </Row>
+      )
+    })
+  )
+}
+
+const renderCols = (state, components, updateValue, sectionSize) => (inputConfig) => {
+  const Component = components[inputConfig.type]
+  return (
+    <Col md={Math.floor(12/sectionSize)}>
+      <Component  config={inputConfig} state={state} update={updateValue}/>
+    </Col>
   )
 }
 
