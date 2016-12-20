@@ -6,7 +6,7 @@ import { SET_STATE, SET_PROPERTY } from '../common/constants'
 import { connect } from 'react-redux'
 
 /*
-rootstate: the configurable-form reducer
+rootstate: the root-level reducer
 state: the initial state for this form
 config: the config for this form
 dispatch: redux dispatch function
@@ -15,15 +15,16 @@ lib: optional map of user defined components
 */
 
 const Form = ({ rootState, state, config, dispatch, name, lib={} }) => {
-  if(!rootState || !rootState.get(name)) {
+  const forms = rootState && rootState.get('configurableForm')
+  if(!forms || !forms.get(name)) {
     dispatch({ type: SET_STATE, payload: { name, state }})
     return <nosript />
   }
-  const savedState = rootState.get(name)
+  const formState = forms.get(name)
   const components = Object.assign({}, coreComponents, lib)
   return (
     <div>
-      {renderComponents(savedState, config, components, updateValue(name, dispatch))}
+      {renderComponents(formState, config, components, updateValue(name, dispatch))}
     </div>
   )
 }
@@ -70,4 +71,6 @@ const updateValue = (name, dispatch) => (path, value) => {
 }
 
 
-export default Form
+export default connect(state => {
+  return state ? { rootState: state } : {}
+})(Form)

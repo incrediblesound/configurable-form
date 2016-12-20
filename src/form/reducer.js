@@ -11,5 +11,6 @@ export default (state = new Map(), { type, payload }) => {
     case (SET_PROPERTY):
       return state.setIn(payload.path, payload.value)
     default:
+      return state
   }
 }
