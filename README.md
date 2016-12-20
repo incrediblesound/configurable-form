@@ -19,7 +19,7 @@ export default combineReducers({
   configurableForm: configurableFormReducer,
   myReducer
 })
-
+```
 Nothing is special to use this store with redux and connect it to our application:
 *App.js*
 ```javascript
