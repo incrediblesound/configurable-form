@@ -5,14 +5,22 @@ WIP
 
 
 ###How To
-First you need to import the configurable form reducer into your app. I'll use a simple example where the configurable form reducer is the only reducer.
+First you need to import the configurable form reducer into your app. You must have an immutable store and put the configurable form reducer into the store at the root level under the key configurableForm. Here is a simple example:
 
 *reducer.js*
 ```javascript
+import { combineReducers } from 'redux-immutable'
+import { Map } from 'immutable'
 import { configurableFormReducer } from 'configurable-form'
 
-export default configurableFormReducer
-```
+const myReducer = (state = new Map(), action) => state
+
+export default combineReducers({
+  configurableForm: configurableFormReducer,
+  myReducer
+})
+
+Nothing is special to use this store with redux and connect it to our application:
 *App.js*
 ```javascript
 import { Provider } from 'react-redux'
@@ -43,7 +51,7 @@ import { Map } from 'immutable'
 import { Form } from 'configurable-form'
 import { connect } from 'react-redux'
 
-/* This simple JSON configuration can be fetched from the server.
+/* This JSON configuration can be fetched from the server.
    The form creates a grid where the inner arrays are rows and each object represents a column and a component.
 */
 const config = [
@@ -57,7 +65,9 @@ const config = [
   ]
 ]
 
-// This data model will be injected into the store at store.formName
+/* 
+This data model will be injected into the store in the configurableForm reducer at the key determined by the form name 
+*/
 const person = new Map({
   name: '',
   age: null,
@@ -65,35 +75,25 @@ const person = new Map({
   isMember: null
 })
 
-const Form = (props) => {
+const MyForm = (props) => {
   return (
     <div>
       <h1>Form</h1>
       <Form
-        rootState={props.state}
         config={config}
         name={'userForm'}
         state={person}
-        dispatch={props.dispatch}
       />
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    state
-  }
-}
-
-export default connect(mapStateToProps)(Home)
+export default MyForm
 
 ```
 
-The API for the form component is not very clean, it is still a work in progress:
+Here is the API for Form:
 
-rootState: the configurableForm reducer   
 config: the form configuration   
 name: the namespace for the form data in the store   
 state: the initial state for the data in the store at the key defined by "name"
-dispatch: the redux dispatch function
